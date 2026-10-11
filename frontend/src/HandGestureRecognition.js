@@ -8,7 +8,7 @@ function HandGestureRecognition() {
   const videoElement = useRef(null);
   const canvasElement = useRef(null);
   const [isLive, setIsLive] = useState(false);
-  const [recognizedText, setRecognizedText] = useState('Click Go Live to start');
+  const [recognizedText, setRecognizedText] = useState('Haz clic en iniciar para comenzar');
 
   const startCamera = async () => {
     try {
@@ -58,15 +58,15 @@ function HandGestureRecognition() {
               const middleTip = landmarks[12];
               
               if (indexTip.y < wrist.y && middleTip.y < wrist.y) {
-                setRecognizedText("Peace Sign");
+                setRecognizedText("Seña de paz");
               } else if (indexTip.y < wrist.y) {
-                setRecognizedText("Pointing");
+                setRecognizedText("Señalando");
               } else {
-                setRecognizedText("Hand Detected");
+                setRecognizedText("Mano detectada");
               }
             }
           } else {
-            setRecognizedText("No hands detected");
+            setRecognizedText("No se detectan manos");
           }
           canvasCtx.restore();
         });
@@ -81,11 +81,11 @@ function HandGestureRecognition() {
 
         await camera.start();
         setIsLive(true);
-        console.log("Camera started successfully");
+        console.log("Cámara iniciada correctamente");
       }
     } catch (error) {
       console.error("Error starting camera:", error);
-      setRecognizedText("Error: Cannot access camera");
+      setRecognizedText("Error: no se puede acceder a la cámara");
     }
   };
 
@@ -95,7 +95,7 @@ function HandGestureRecognition() {
       tracks.forEach(track => track.stop());
       videoElement.current.srcObject = null;
       setIsLive(false);
-      setRecognizedText('Camera stopped');
+      setRecognizedText('Cámara detenida');
     }
   };
 
@@ -125,7 +125,7 @@ function HandGestureRecognition() {
         />
       </div>
       <div className="text-container">
-        <h2>Hand Gesture Recognition</h2>
+        <h2>Reconocimiento de gestos con la mano</h2>
         <div className="recognized-text-box">
           {recognizedText}
         </div>
@@ -134,7 +134,7 @@ function HandGestureRecognition() {
             onClick={isLive ? stopCamera : startCamera}
             className="control-button"
           >
-            {isLive ? 'Stop Camera' : 'Start Camera'}
+            {isLive ? 'Detener cámara' : 'Iniciar cámara'}
           </button>
         </div>
       </div>

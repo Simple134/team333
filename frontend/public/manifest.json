@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "ENAPSOR Señas",
+  "name": "Desarrollo de un Sistema Inteligente de Traducción de Lengua de Señas para Optimizar la Comunicación entre Personas Sordas y Oyentes en la Escuela Nacional de Sordomudos (ENAPSOR), La Vega, Agosto 2026.",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#31593f",
+  "background_color": "#f4f2ea"
 }

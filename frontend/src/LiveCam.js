@@ -37,7 +37,7 @@ function LiveCam() {
     <div className="live-cam-container">
       <button className="back-button" onClick={handleBack}>
         <FontAwesomeIcon icon={faArrowLeft} className="back-icon" />
-        Back
+        Volver
       </button>
       <div className="content">
         <video
@@ -55,7 +55,7 @@ function LiveCam() {
           <div className="controls">
             <button className="text-to-speech-button">
               <FontAwesomeIcon icon={faVolumeUp} className="speech-icon" />
-              Text-to-Speech
+              Texto a voz
             </button>
           </div>
         </div>

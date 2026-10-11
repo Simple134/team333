@@ -24,6 +24,6 @@ async def upload_video(file: UploadFile = File(...)):
     # For example: result = process_video(file_location)
 
     # Simulate a result from the model
-    result = "Detected sign language text"
+    result = "Texto de lengua de señas detectado"
 
-    return JSONResponse(content={"message": "Upload successful", "result": result})
+    return JSONResponse(content={"message": "Carga completada", "result": result})

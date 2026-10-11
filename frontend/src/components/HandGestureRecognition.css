@@ -1,23 +1,41 @@
 .gesture-container {
+  position: relative;
+  min-height: 100dvh;
+  box-sizing: border-box;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background-color: #f5f5f5;
-  min-height: 100vh;
+  justify-content: center;
+  padding: clamp(var(--space-lg), 4vw, var(--space-2xl));
+  padding-block-start: clamp(var(--space-3xl), 10vh, 7rem);
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+.live-layout {
+  width: min(100%, 76rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(20rem, 0.92fr);
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+.translator-panel {
+  display: grid;
+  gap: var(--space-lg);
+  min-width: 0;
 }
 
 .video-wrapper {
   position: relative;
-  width: 640px;
-  height: 480px;
-  background: #000;
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 20px;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: var(--color-video);
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-lg);
+  overflow: clip;
 }
 
-.input-video {
+.input-video,
+.output-canvas {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -25,114 +43,623 @@
 
 .output-canvas {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  inset: 0;
 }
 
 .controls {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 20px;
   width: 100%;
-  max-width: 640px;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
-  text-align: center;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: var(--space-sm);
+  align-items: center;
+  padding: var(--space-md);
+  background: var(--color-panel);
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-lg);
 }
 
 .gesture-text {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  padding: 10px;
-  background: #f8f9fa;
-  border-radius: 5px;
-  text-align: center;
+  min-width: 0;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-paper-2);
+  border-radius: var(--radius-md);
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
 }
 
-.camera-button {
-  display: block;
-  margin: 0 auto 20px;
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #000;
-  color: white;
-  border: none;
-  border-radius: 5px;
+.camera-button,
+.tts-button {
+  min-height: 2.75rem;
+  padding: 0.7rem 1rem;
+  background: var(--color-accent-strong);
+  color: var(--color-accent-ink);
+  border: var(--rule-hair) solid var(--color-accent-strong);
+  border-radius: var(--radius-md);
   cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  white-space: nowrap;
+  transition:
+    background-color var(--dur-short) var(--ease-out),
+    transform var(--dur-micro) var(--ease-out);
 }
 
-.camera-button:hover {
-  background-color: #333;
+.tts-button {
+  background: transparent;
+  color: var(--color-accent-strong);
+}
+
+.camera-button:hover,
+.tts-button:hover {
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+  transform: translateY(-1px);
+}
+
+.camera-button:active,
+.tts-button:active {
+  transform: translateY(1px);
+}
+
+.camera-button:focus-visible,
+.tts-button:focus-visible,
+.back-button:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.camera-button:disabled,
+.tts-button:disabled,
+.back-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  transform: none;
 }
 
 .instructions {
   width: 100%;
-  max-width: 640px;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.instructions h3 {
-  margin-top: 0;
+  box-sizing: border-box;
+  padding: var(--space-lg);
+  background: var(--color-panel);
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-lg);
 }
 
 .instructions ul {
-  list-style-type: none;
+  display: grid;
+  gap: var(--space-xs);
+  margin: var(--space-sm) 0 0;
   padding: 0;
+  list-style: none;
 }
 
 .instructions li {
-  padding: 8px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.instructions li:last-child {
-  border-bottom: none;
+  padding-block: var(--space-xs);
+  border-block-start: var(--rule-hair) solid var(--color-rule);
+  color: var(--color-muted);
 }
 
 .instructions p {
-  font-weight: bold;
+  margin: 0;
+  color: var(--color-ink);
+  font-weight: 700;
 }
 
 .back-button {
   position: absolute;
-  top: 20px;
-  left: 20px;
-  padding: 10px 20px;
-  background-color: #f5f5f5ea;
-  color: #333;
-  border: none;
-  border-radius: 12px;
+  inset-block-start: var(--space-lg);
+  inset-inline-start: var(--space-lg);
+  min-height: 2.75rem;
+  padding: 0.7rem 1rem;
+  background: var(--color-panel);
+  color: var(--color-accent-strong);
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  font-size: 1rem;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  white-space: nowrap;
 }
 
 .back-icon {
-  margin-right: 15px;
-  font-size: 1rem;
+  margin-inline-end: var(--space-sm);
+  font-size: var(--text-sm);
 }
 
-.tts-button {
-  display: block;
-  margin: 10px auto;
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #000;
-  color: white;
-  border: none;
-  border-radius: 5px;
+.learning-panel {
+  min-width: 0;
+  display: grid;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
+  background: var(--color-panel);
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-lg);
+}
+
+.learning-header {
+  display: grid;
+  gap: var(--space-sm);
+  padding-block-end: var(--space-md);
+  border-block-end: var(--rule-hair) solid var(--color-rule);
+}
+
+.learning-header h1 {
+  margin: 0;
+  color: var(--color-accent-strong);
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  line-height: 1;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.learning-header p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.guide-tabs {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  flex-wrap: wrap;
+}
+
+.guide-tabs button,
+.phrase-list button,
+.alphabet-grid button {
+  min-height: 2.5rem;
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-accent-strong);
   cursor: pointer;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  white-space: nowrap;
+  transition:
+    background-color var(--dur-short) var(--ease-out),
+    color var(--dur-short) var(--ease-out),
+    transform var(--dur-micro) var(--ease-out);
 }
 
-.tts-button:hover {
-  background-color: #333;
+.guide-tabs button {
+  padding: 0.55rem 0.8rem;
+}
+
+.guide-tabs button:hover,
+.phrase-list button:hover,
+.alphabet-grid button:hover {
+  background: var(--color-paper-2);
+  transform: translateY(-1px);
+}
+
+.guide-tabs button:active,
+.phrase-list button:active,
+.alphabet-grid button:active {
+  transform: translateY(1px);
+}
+
+.guide-tabs button:focus-visible,
+.phrase-list button:focus-visible,
+.alphabet-grid button:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.guide-tabs button.active,
+.phrase-list button.selected,
+.alphabet-grid button.selected {
+  background: var(--color-accent-strong);
+  color: var(--color-accent-ink);
+  border-color: var(--color-accent-strong);
+}
+
+.guide-section {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.phrase-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.phrase-list button {
+  padding: 0.55rem 0.75rem;
+}
+
+.official-sign-reference {
+  display: grid;
+  gap: var(--space-xs);
+  margin: 0;
+  padding: var(--space-sm);
+  background: var(--color-paper-2);
+  border-radius: var(--radius-lg);
+}
+
+.official-sign-reference img {
+  width: 100%;
+  max-height: 24rem;
+  object-fit: contain;
+  background: #fff;
+  border-radius: var(--radius-md);
+}
+
+.official-sign-reference figcaption {
+  color: var(--color-muted);
+  font-size: var(--text-xs);
+  line-height: 1.45;
+}
+
+.practice-card {
+  display: grid;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  background: var(--color-paper-2);
+  border-radius: var(--radius-lg);
+}
+
+.practice-label {
+  color: var(--color-soft);
+  font-family: var(--font-outlier);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.practice-card h2 {
+  margin: 0;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  line-height: 1.05;
+}
+
+.practice-card p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.alphabet-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--space-xs);
+}
+
+.alphabet-grid button {
+  padding: 0;
+  font-family: var(--font-outlier);
+  font-size: var(--text-sm);
+}
+
+.letter-card {
+  grid-template-columns: minmax(9rem, 0.8fr) minmax(0, 1fr);
+  align-items: center;
+}
+
+.letter-visual {
+  display: grid;
+  place-items: center;
+  gap: var(--space-xs);
+  min-width: 0;
+}
+
+.letter-visual strong {
+  color: var(--color-accent-strong);
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 12vw, 7rem);
+  line-height: 0.9;
+}
+
+.sign-facts {
+  display: grid;
+  gap: var(--space-xs);
+  min-width: 0;
+}
+
+.sign-facts p {
+  padding-block: var(--space-xs);
+  border-block-start: var(--rule-hair) solid color-mix(in oklch, var(--color-rule), transparent 15%);
+}
+
+.sign-sequence {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.sign-step {
+  display: grid;
+  grid-template-columns: 5.25rem minmax(0, 1fr);
+  gap: var(--space-sm);
+  align-items: center;
+  padding: var(--space-sm);
+  background: color-mix(in oklch, var(--color-panel), var(--color-paper-2) 42%);
+  border-radius: var(--radius-md);
+}
+
+.sign-step strong {
+  display: block;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  line-height: 1.05;
+}
+
+.sign-step span {
+  display: block;
+  margin-block-start: 0.2rem;
+  color: var(--color-muted);
+  font-size: var(--text-sm);
+  line-height: 1.45;
+}
+
+.source-link {
+  width: fit-content;
+  color: var(--color-accent-strong);
+  font-size: var(--text-sm);
+  font-weight: 800;
+  text-underline-offset: 0.2em;
+}
+
+.source-link:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+.sign-diagram {
+  width: min(100%, 9.5rem);
+  aspect-ratio: 6 / 5;
+  display: block;
+  overflow: visible;
+}
+
+.sign-wrist,
+.sign-palm,
+.finger {
+  fill: #f2c39d;
+  stroke: #6f4532;
+  stroke-width: 3;
+}
+
+.sign-palm {
+  fill: #f5caa9;
+}
+
+.sign-curls,
+.motion-marks {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sign-curls {
+  stroke: #6f4532;
+  stroke-width: 5;
+}
+
+.motion-marks {
+  stroke: var(--color-accent-strong);
+  stroke-width: 4;
+  opacity: 0;
+}
+
+.sign-letter-mark {
+  fill: var(--color-accent-strong);
+  font-family: var(--font-outlier);
+  font-size: 18px;
+  font-weight: 800;
+  pointer-events: none;
+}
+
+.sign-diagram .curl,
+.sign-diagram .motion-line,
+.sign-diagram .motion-arc {
+  opacity: 0;
+}
+
+.sign-diagram--closed .finger,
+.sign-diagram--fist-thumb .finger:not(.finger-thumb),
+.sign-diagram--m .finger:not(.finger-thumb),
+.sign-diagram--n .finger:not(.finger-thumb),
+.sign-diagram--n-motion .finger:not(.finger-thumb),
+.sign-diagram--t .finger:not(.finger-thumb) {
+  opacity: 0.18;
+  transform: translateY(34px) scaleY(0.42);
+  transform-origin: center bottom;
+}
+
+.sign-diagram--closed .curl,
+.sign-diagram--fist-thumb .curl,
+.sign-diagram--m .curl,
+.sign-diagram--n .curl,
+.sign-diagram--n-motion .curl,
+.sign-diagram--t .curl {
+  opacity: 1;
+}
+
+.sign-diagram--index-up .finger-middle,
+.sign-diagram--index-up .finger-ring,
+.sign-diagram--index-up .finger-pinky,
+.sign-diagram--l .finger-middle,
+.sign-diagram--l .finger-ring,
+.sign-diagram--l .finger-pinky,
+.sign-diagram--index-motion .finger-middle,
+.sign-diagram--index-motion .finger-ring,
+.sign-diagram--index-motion .finger-pinky,
+.sign-diagram--point-self .finger-middle,
+.sign-diagram--point-self .finger-ring,
+.sign-diagram--point-self .finger-pinky {
+  opacity: 0.18;
+  transform: translateY(32px) scaleY(0.45);
+  transform-origin: center bottom;
+}
+
+.sign-diagram--pinky .finger-index,
+.sign-diagram--pinky .finger-middle,
+.sign-diagram--pinky .finger-ring,
+.sign-diagram--pinky-motion .finger-index,
+.sign-diagram--pinky-motion .finger-middle,
+.sign-diagram--pinky-motion .finger-ring,
+.sign-diagram--y .finger-index,
+.sign-diagram--y .finger-middle,
+.sign-diagram--y .finger-ring {
+  opacity: 0.18;
+  transform: translateY(32px) scaleY(0.45);
+  transform-origin: center bottom;
+}
+
+.sign-diagram--two-up .finger-ring,
+.sign-diagram--two-up .finger-pinky,
+.sign-diagram--v .finger-ring,
+.sign-diagram--v .finger-pinky,
+.sign-diagram--two-side .finger-ring,
+.sign-diagram--two-side .finger-pinky,
+.sign-diagram--r .finger-ring,
+.sign-diagram--r .finger-pinky,
+.sign-diagram--k .finger-ring,
+.sign-diagram--k .finger-pinky,
+.sign-diagram--no .finger-ring,
+.sign-diagram--no .finger-pinky {
+  opacity: 0.18;
+  transform: translateY(32px) scaleY(0.45);
+  transform-origin: center bottom;
+}
+
+.sign-diagram--w .finger-pinky,
+.sign-diagram--pinch .finger-index,
+.sign-diagram--o .finger,
+.sign-diagram--curve .finger,
+.sign-diagram--x .finger-middle,
+.sign-diagram--x .finger-ring,
+.sign-diagram--x .finger-pinky,
+.sign-diagram--q .finger-middle,
+.sign-diagram--q .finger-ring,
+.sign-diagram--q .finger-pinky {
+  opacity: 0.35;
+  transform: translateY(22px) scaleY(0.62);
+  transform-origin: center bottom;
+}
+
+.sign-diagram--v .finger-index {
+  transform: rotate(-8deg);
+  transform-origin: center bottom;
+}
+
+.sign-diagram--v .finger-middle,
+.sign-diagram--k .finger-middle {
+  transform: rotate(8deg);
+  transform-origin: center bottom;
+}
+
+.sign-diagram--r .finger-index {
+  transform: rotate(8deg);
+  transform-origin: center bottom;
+}
+
+.sign-diagram--r .finger-middle {
+  transform: rotate(-8deg);
+  transform-origin: center bottom;
+}
+
+.sign-diagram--index-side,
+.sign-diagram--two-side,
+.sign-diagram--p,
+.sign-diagram--q {
+  transform: rotate(90deg);
+}
+
+.sign-diagram--thanks .motion-arc,
+.sign-diagram--flat-mouth .motion-arc,
+.sign-diagram--day-arc .motion-arc,
+.sign-diagram--open-wave .motion-arc,
+.sign-diagram--pinky-motion .motion-arc,
+.sign-diagram--n-motion .motion-line,
+.sign-diagram--index-motion .motion-line,
+.sign-diagram--index-motion .motion-line-two,
+.sign-diagram--pull-self .motion-line,
+.sign-diagram--two-palms .motion-line,
+.sign-diagram--two-palms .motion-line-two {
+  opacity: 1;
+}
+
+.sign-diagram--thumb-up {
+  transform: rotate(-44deg);
+}
+
+.detected-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.detected-list span {
+  padding: 0.45rem 0.65rem;
+  background: var(--color-panel);
+  border: var(--rule-hair) solid var(--color-rule);
+  border-radius: var(--radius-md);
+  color: var(--color-ink);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+
+.detected-list--visual span {
+  display: grid;
+  place-items: center;
+  gap: 0.15rem;
+  width: 6.5rem;
+  min-height: 6.75rem;
+  text-align: center;
+}
+
+.detected-list--visual .sign-diagram {
+  width: 5.3rem;
+}
+
+@media (max-width: 48rem) {
+  .live-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .camera-button,
+  .tts-button {
+    width: 100%;
+  }
+
+  .alphabet-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .letter-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 30rem) {
+  .gesture-container {
+    padding-inline: var(--space-md);
+  }
+
+  .alphabet-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }

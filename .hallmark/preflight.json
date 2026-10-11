@@ -1,0 +1,9 @@
+{
+  "date": "2026-08-10",
+  "framework": "Create React App",
+  "styling": "vanilla CSS",
+  "motion": "motion-cut",
+  "font_stack": "Google Fonts via src/index.css",
+  "palette": "Hallmark Garden-inspired OKLCH tokens",
+  "preserve": ["React routes", "existing image assets", "camera workflow"]
+}
